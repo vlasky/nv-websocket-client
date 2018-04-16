@@ -119,7 +119,9 @@ class SocketConnector
         {
             // Connect to the server (either a proxy or a WebSocket endpoint); overlay mSocket
             // Ignore mConnectionTimeout
-            mSocket = mSocketFactory.createSocket(mAddress.getHostname(), mAddress.toInetSocketAddress().getPort());
+            mSocket = mSocketFactory.createSocket(); // This will create an unconnected socket
+            mSocket.setSoTimeout(mConnectionTimeout); // Set timeout
+            mSocket = mSocketFactory.createSocket(mSocket, mAddress.getHostname(), mAddress.toInetSocketAddress().getPort(), true); // Connect.
             // mSocket.connect(mAddress.toInetSocketAddress(), mConnectionTimeout);
 
             if (mSocket instanceof SSLSocket)
